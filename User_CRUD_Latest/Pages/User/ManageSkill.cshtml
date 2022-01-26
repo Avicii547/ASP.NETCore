@@ -1,0 +1,122 @@
+﻿@page
+@model User_CRUD_Latest.Pages.User.ManageSkillModel
+@{
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary">
+        <h6 class="text-center pt-1 font-weight-bold text-white">Add / Edit Skill</h6>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-outline-primary btn-sm" data-toggle="modal" href="#"
+           data-target="#AddSkillModal"><span>Add Skill<i class="fas fa-plus" title="Add Skill"></i></span></a> &nbsp;
+
+        <hr />
+        @if (Model.Skills != null)
+        {
+            <div>
+                <table class="table table-striped table-bordered table-sm shadow-sm table-hover">
+                    <thead>
+                        <tr>
+                            @*<th></th>*@
+                            <th></th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Display Order</th>
+                            <th class="text-center">Last Updated By</th>
+                            <th class="text-center">Last Updated On</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var st in Model.Skills)
+                        {
+                            <tr>
+                                @*<td>
+                                        <a class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                           data-target="#EditSkillModal" data-skillkey="@st.PKey"
+                                           data-skillname="@st.Name" data-description="@st.Description"
+                                           data-displayorder="@st.DisplayOrder" title="Edit" href="#">
+                                            <span><i class="fas fa-edit"></i></span>
+                                        </a>
+                                    </td>*@
+                                <td>
+                                    <form method="post" asp-page-handler='DeactivateSkill' class="AreYouSureForm"
+                                          data-ajax="true" data-ajax-method="post" data-ajax-complete="DeactivateSkillCompleted">
+                                        <input type="hidden" id="PKey" name="PKey" value="@st.PKey" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Deactivate"
+                                                href="#" onclick="return confirm('Are you sure?');">
+                                            Delete <span><i class="fas fa-trash-alt"></i></span>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <a>@st.Name</a>
+                                </td>
+                                <td>
+                                    <a>@st.Description</a>
+                                </td>
+                                <td class="text-right">
+                                    <a>@st.DisplayOrder</a>
+                                </td>
+                                <td>
+                                    @st.LastUpdatedBy
+                                </td>
+                                <td class="text-right">@st.LastUpdatedOn?.ToString("F")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+<div class="modal fade" id="AddSkillModal" tabindex="-1" role="dialog" aria-labelledby="AddSkillModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data" asp-page-handler="AddSkill"
+                  data-ajax="true" data-ajax-method="post">
+                <div id="app">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="AddSkillLabel">
+                            Add Skill
+                        </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label='Close'>
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label asp-for="Skill.Name" class="font-weight-bold">Name</label>
+                                    <input type="text" class="form-control nameInputBox" asp-for="Skill.Name" aria-describedby="NameHelp" placeholder='Enter Skill Name' required>
+                                    <small id="NameHelp" class="form-text text-muted">Name should be unique</small>
+                                    <span asp-validation-for="Skill.Name" class="text-danger"></span>
+                                </div>
+                                <div class="col">
+                                    <label asp-for="Skill.DisplayOrder" class="font-weight-bold">Display Order</label>
+                                    <input type="number" class="form-control percentInputBox" min="-32767" max="32767" step="1" asp-for="Skill.DisplayOrder" required />
+                                    <span asp-validation-for="Skill.DisplayOrder" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <label for="Description" class="font-weight-bold">Description</label>
+                                <textarea class="form-control" rows="3" asp-for="Skill.Description" placeholder='Description' required></textarea>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-primary" type="submit">Save<i class="fas fa-save" title="Save"></i></button>
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">
+                            Close<i class="fas fa-window-close" title="Close"></i>
+                        </button>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

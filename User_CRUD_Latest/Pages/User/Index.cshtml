@@ -1,0 +1,62 @@
+﻿@page
+@model User_Crud_New.Pages.User.IndexModel
+@{
+}
+
+<div class="card shadow">
+    <div class="card-header bg-primary">
+        <h6 class="text-center pt-1 font-weight-bold text-white">List of Users</h6>
+    </div>
+    <div class="card-body">
+        <a class="btn btn-outline-primary btn-sm" href="/User/ManageUser"><i class="fas fa-plus mr-2" aria-hidden="true" title="Add User"></i>Add User</a>
+        <hr />
+        @if (Model.Users != null)
+        {
+            <div>
+                <table class="table table-striped table-bordered table-sm shadow-sm table-hover">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">DOB</th>
+                            <th class="text-center">Designation</th>
+                            <th class="text-center">Skills</th>
+                            <th class="text-center">Last Updated by</th>
+                            <th class="text-center">Last Updated On</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var d in Model.Users)
+                        {
+                            <tr>
+                                <td>
+                                    <a class="btn btn-outline-primary btn-sm" id="EditUser" asp-page="./ManageUser" asp-route-Pkey="@d.PKey" title="Edit">
+                                        Edit
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <form method="post" asp-page-handler="DeactivateUser" asp-route-pkey="@d.PKey" name="DeactivateUserForm" id="DeactivateUserForm"
+                                          data-ajax="true" data-ajax-method="post" data-ajax-complete="DeactivateBankAccountCompleted">
+                                        <button class="btn btn-outline-danger btn-sm ml-1" onclick="return confirm('Are you sure?');" id="EditUser" type="submit" title="Deactivate">
+                                            Delete <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                                <td class="text-wrap"> @d.Name </td>
+                                <td class="text-wrap text-right"> @d.DOB?.ToString("d") </td>
+                                <td class="text-wrap"> @d.Designation </td>
+                                <td class="text-wrap"> @d.SkillNames </td>
+                                <td class="text-wrap"> @d.LastUpdatedBy </td>
+                                <td class="text-wrap text-right"> @d.LastUpdatedOn?.ToString("F") </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

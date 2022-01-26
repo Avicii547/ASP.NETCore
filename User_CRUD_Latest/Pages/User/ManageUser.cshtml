@@ -1,0 +1,85 @@
+﻿@page
+@model User_CRUD_Latest.Pages.User.ManageUserModel
+@{
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Index"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="/User/Index">List of Users</a></li>
+        @if (Model.UserModel == null)
+        {
+            <li class="breadcrumb-item active" aria-current="page">Add User</li>
+        }
+        else
+        {
+            <li class="breadcrumb-item active" aria-current="page">Edit User</li>
+        }
+    </ol>
+</nav>
+<hr />
+<div class="card shadow">
+    <div class="card-header bg-primary">
+        @if (Model.UserModel != null)
+        {
+            <h6 class="text-center pt-1 font-weight-bold text-white">Edit User Details</h6>
+        }
+        else
+        {
+            <h6 class="text-center pt-1 font-weight-bold text-white">Add User Details</h6>
+        }
+    </div>
+    <div class="card-body">
+        <form method="post" asp-page-handler='@(Model.UserModel == null ? "AddUser" : "SaveUser")'
+              data-ajax="true" data-ajax-method="post" data-ajax-complete="AddOrUpdateUserCompleted">
+            <div class="text-danger" asp-validation-summary="All" id="ValidationTop"></div>
+
+            @if (Model.UserModel != null)
+            {
+                <input type="hidden" asp-for="UserModel.PKey" />
+            }
+            <button type="submit" class="btn btn-outline-primary" title="Save" href="#">Save<i class="fas fa-save"></i></button>
+
+            <a class="btn btn-outline-secondary" href='/User/Index' title="Cancel">Cancel<i class="fas fa-window-close"></i></a>
+            <hr />
+            <div class="form-row">
+                <div class="mt-2 col-lg-4">
+                    <label asp-for="UserModel.Name" class="font-weight-bold">Name</label>
+                    <input type="text" class="form-control nameInputBox" asp-for="UserModel.Name" placeholder='Enter Name' required>
+                    <span asp-validation-for="UserModel.Name" class="text-danger"></span>
+                </div>
+                <div class="mt-2 col-lg-4">
+                    <label asp-for="UserModel.Designation" class="font-weight-bold">Designation</label>
+                    <input type="text" class="form-control nameInputBox" asp-for="UserModel.Designation" placeholder='Enter Designation' required>
+                    <span asp-validation-for="UserModel.Designation" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="mt-2 col-lg-4">
+                    <label asp-for="UserModel.DOB" class="font-weight-bold">DOB</label>
+                    <input type="date" min="1990-01-01" max="2999-12-31" class="form-control percentInputBox" asp-for="UserModel.DOB" required />
+                    <span asp-validation-for="UserModel.DOB" class="text-danger"></span>
+                </div>
+                <div class="mt-2 col-lg-4">
+                    <label asp-for="UserModel.DisplayOrder" class="font-weight-bold">Display Order</label>
+                    <input type="number" class="form-control nameInputBox" asp-for="UserModel.DisplayOrder" required>
+                    <span asp-validation-for="UserModel.DisplayOrder" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="mt-2 col-lg-4">
+                    <label asp-for="SkillKey" class="font-weight-bold">Skills</label>
+                    <select multiple class="form-control w-auto" size="10" asp-for="SkillKey" required>
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <option value='@skill.PKey.ToString()'>@skill.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="SkillKey" class="text-danger"></span><br />
+                </div>
+            </div>
+            <hr />
+            <button type="submit" class="btn btn-outline-primary" title="Save" href="#">Save<i class="fas fa-save"></i></button>
+            <a class="btn btn-outline-secondary" href='/User/Index' title="Cancel">Cancel<i class="fas fa-window-close"></i></a>
+        </form>
+    </div>
+</div>
