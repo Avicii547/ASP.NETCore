@@ -1,6 +1,4 @@
-create database CRUD;
 
-Use CRUD;
 CREATE TABLE [dbo].[Skill](
 	PKey [uniqueidentifier] NOT NULL DEFAULT (newid()) primary key nonclustered,
 	UniqueKey SMALLINT IDENTITY(-32767,1) NOT NULL UNIQUE CLUSTERED,
